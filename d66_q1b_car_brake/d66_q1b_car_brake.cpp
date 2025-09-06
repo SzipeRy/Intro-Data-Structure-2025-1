@@ -5,6 +5,7 @@ void debugSpeed(std::map<long, long> &speed);
 
 int main(void)
 {
+    std::ios_base::sync_with_stdio(0); std::cin.tie(NULL);
     long n, m, k;
     std::map<long, long> brake;
     std::map<long, long> speed;
@@ -50,8 +51,8 @@ int main(void)
         }
     }
     speedReverse.insert({k, 0});
-    debugSpeed(speed);
-    debugSpeed(speedReverse);
+    // debugSpeed(speed);
+    // debugSpeed(speedReverse);
     
     long tmpK = k;
 
