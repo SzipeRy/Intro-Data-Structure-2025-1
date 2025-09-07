@@ -28,9 +28,5 @@ int main(void)
 
 void multiple_add(std::vector<int> &v, int value, int position, int count)
 {
-    auto it = v.begin() + position;
-    for (int i = 0; i < count ; i++)
-    {
-        v.insert(it, value);
-    }
+    v.insert(v.begin() + position, count, value);
 }
