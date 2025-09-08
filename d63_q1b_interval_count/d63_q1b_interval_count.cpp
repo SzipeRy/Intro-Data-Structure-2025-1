@@ -28,7 +28,16 @@ int main(void)
 
         auto itLeft = std::lower_bound(range.begin(), range.end(), left);
         auto itRight = std::lower_bound(range.begin(), range.end(), right);
-    
+        
+        if (itLeft == range.end())
+        {
+            std::cout << 0 << ' ';
+            continue;
+        }
+        if (itRight == range.end())
+        {
+            itRight--;
+        }
         if (*itLeft > right)
         {
             std::cout << 0 << ' ';
