@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <vector>
 
 int main(void)
 {
@@ -21,45 +22,38 @@ int main(void)
         changeRate.insert({a,s});
     }
 
-    for (int i = 0; i < m; i++)
+    std::vector<int> daySaving(100000);
+    auto itRate = changeRate.begin();
+    int rate = start;
+    long saving = 0;
+
+    for (int j = 0; j < 100000; j++)
     {
-        int rate = start;
-        day = 0;
-        auto itRate = changeRate.begin();
-        long saving = start;
-        bool iceCream = false;
-
-        std::cin >> p >> x;
-
-        while (!iceCream)
-        // for (int j = 0; j < 10; j++)
+        if (j == itRate->first)
         {
-            if (saving >= p)
-            {
-                std::cout << day << ' ';
-                iceCream = true;
-                break;
-            }
-            day++;
-            if (day == itRate->first && itRate != changeRate.end())
-            {
-                rate = itRate->second;
-                itRate++;
-            }
-            saving += rate;
-            if (saving >= p)
-            {
-                std::cout << day-- << ' ';
-                iceCream = true;
-            }
-            
-            if (day == x)
-            {
-                saving = 0;
-            }
-            
+            rate = itRate->second;
+            itRate++;
         }
+        saving += rate;   
+        daySaving[j] = saving; 
+    }
 
+    for (int i = 0; i < m; i++)
+    {        
+        std::cin >> p >> x;
+        
+        auto itIce = std::lower_bound(daySaving.begin(), daySaving.end(), p);
+
+        if (itIce - daySaving.begin() <= x)
+        {
+            std::cout << itIce - daySaving.begin() << ' ';
+        }
+        else
+        {
+            p += daySaving[x];
+            auto newItIce = std::lower_bound(itIce, daySaving.end(), p);
+            std::cout << newItIce - daySaving.begin() << ' ';
+        }
 
     }
 }
