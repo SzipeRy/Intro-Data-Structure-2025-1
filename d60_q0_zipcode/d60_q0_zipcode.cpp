@@ -9,16 +9,24 @@ class Letter
 public:
     // is 10120 < 10330?
     std::string name; std::string address; std::string province; std::string district; int zip;
-    bool operator < (const Letter& other) const 
+    bool operator< (const Letter& other) const 
     {
         //**Begin Insert**
-        if (zip != other.zip)
+        if (zip < other.zip)
         {
-            return zip < other.zip;
+            return true;
+        }
+        else if (province < other.province)
+        {
+            return true;
+        }
+        else if (district < other.district)
+        {
+            return true;
         }
         else
         {
-
+            return name < other.name;
         }
         //**End Insert**
     }
@@ -34,39 +42,28 @@ public:
 void correctZipAndSortLetters(std::vector<ZipInfo> &zipinfo, std::vector<Letter> &letters) 
 {
 //**Begin Insert**
-    // Correcting Letter
+
+// There is a chance that different province and district could end up in same zipcode
+// I guess only zipcode is wrong and province and district is correct
+    std::map<std::pair<std::string, std::string>, int> zipinfo_map;
+    for (int i = 0; i < zipinfo.size(); i++)
+    {
+        zipinfo_map[{zipinfo[i].province, zipinfo[i].district}] = zipinfo[i].zip;
+    }
+
     for (int i = 0; i < letters.size(); i++)
     {
-        // tmp is for letters.zip
-        int tmpZipLetter = letters[i].zip;
-        std::string tmpDistrictLetter = letters[i].district;
-        std::string tmpProvinceLetter = letters[i].province;
-        std::vector<int>::iterator it;
-        
-        for (int j = 0; j < zipinfo.size(); j++)
+        auto it = zipinfo_map.find({letters[i].province, letters[i].district});
+        if (letters[i].zip != it->second)
         {
-            int tmpZipInfo = zipinfo[j].zip;
-            std::string tmpDistrictInfo = zipinfo[j].district;
-            std::string tmpProvinceInfo = zipinfo[j].province;
-            if (tmpDistrictInfo == tmpDistrictLetter && tmpProvinceInfo == tmpProvinceLetter)
-            {
-                if (tmpZipInfo == tmpZipLetter)
-                {
-                    break;
-                }
-                else
-                {
-                    letters[i].zip = tmpZipInfo;
-                    break;
-                }
-            }
+            letters[i].zip = it->second;
         }
     }
-    // Sorting Letter
-    // MUST USE SAME VECTOR (letters)
 
 
-
+    std::sort(letters.begin(), letters.end());
+    
+    return;
 //**End Insert**
 }
 
@@ -91,6 +88,7 @@ int main(void)
         letters.push_back(l);
     }
     correctZipAndSortLetters(zipinfo, letters);
+    // std::cout << "-----------------------------" << '\n';
     for (auto & l : letters)
     {
         std::cout << l.name << " " << l.address << " " << l.district << " " << l.province << " " << l.zip << '\n';

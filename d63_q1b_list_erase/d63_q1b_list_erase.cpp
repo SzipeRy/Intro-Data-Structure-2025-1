@@ -6,7 +6,6 @@ using namespace std;
 void list_erase(vector<int> &v, vector<int> &pos) 
 { 
   //write your code here 
-    sort(pos.begin(), pos.end());
     int k = 0;
     for (auto del : pos)
     {
