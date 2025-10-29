@@ -20,7 +20,7 @@ class stack
       for (size_t i = 0;i < mSize;i++) {
         arr[i] = mData[i];
       }
-      delete [] mData;
+      delete [] mData;  
       mData = arr;
       mCap = capacity;
     }
@@ -82,16 +82,8 @@ class stack
     }
 
     //----------------- modifier -------------
-    void push(const T& element) {  // Theta(n)
-      ensureCapacity(mSize + 1);
-      mData[mSize] = element;
-      mSize++;
-    }
-
-    void pop() {
-      if (size() == 0) throw std::out_of_range("index of out range") ;
-      mSize--;
-    }
+    void push(const T& element);
+    void pop();
 
 
 };

@@ -11,7 +11,11 @@ void CP::stack<T>::push(const T &value) {
     ensureCapacity(mSize);
   }
   mData[mSize++] = value;
-  aux_stack_1.push({0, T()});
+  aux_stack_1.push({0, value});
+  while(!aux_stack_2.empty()) 
+  {
+    aux_stack_2.pop();
+  }
   return ;
 } 
 
@@ -22,6 +26,10 @@ void CP::stack<T>::pop() {
   //You can write your code below here
   aux_stack_1.push({1, mData[mSize-1]});
   mSize--;
+  while(!aux_stack_2.empty()) 
+  {
+    aux_stack_2.pop();
+  }
   return ;
 }
 
@@ -36,12 +44,16 @@ void CP::stack<T>::undo() {
   if (aux_stack_1.top().first == 0)
   {
     mSize--;
-    aux_stack_2.push({0, ...});
+    aux_stack_2.push({0, aux_stack_1.top().second});
   }
   // if the last operation is "pop"
   else
   {
-    aux_stack_2.push( {1, ...});
+    if (mSize >= mCap)
+    {
+      ensureCapacity(mSize + 1);
+    }
+    aux_stack_2.push( {1, aux_stack_1.top().second});
     mData[mSize] = aux_stack_1.top().second;
     mSize++;
   }
@@ -60,13 +72,17 @@ void CP::stack<T>::redo() {
 
   if (aux_stack_2.top().first == 0)
   {
+    if (mSize >= mCap)
+    {
+      ensureCapacity(mSize + 1);
+    }
     mData[mSize++] = aux_stack_2.top().second;
-    aux_stack_1.push( {0, ...});
+    aux_stack_1.push( {0, aux_stack_2.top().second});
   }
   else
   {
     mSize--;
-    aux_stack_1.push( {1, ...});
+    aux_stack_1.push( {1, aux_stack_2.top().second});
   }
 
   aux_stack_2.pop();

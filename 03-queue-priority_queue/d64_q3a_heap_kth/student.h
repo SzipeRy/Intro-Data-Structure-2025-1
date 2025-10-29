@@ -9,7 +9,8 @@
 template <typename T,typename Comp >
 T CP::priority_queue<T,Comp>::get_kth(size_t k) const {
   //write your code here
-  std::vector<T> tmp(7);
+  bool greater = false;
+  std::vector<T> tmp;
   int max = 7;
   if (max > mSize)
   {
@@ -17,9 +18,21 @@ T CP::priority_queue<T,Comp>::get_kth(size_t k) const {
   }
   for (int i = 0; i < max; i++)
   {
-    tmp[i] = mData[i];
+    tmp.push_back(mData[i]);
   }
-  std::sort(tmp.begin(), tmp.end());
+
+  if (mData[0] <= mData[1] && mData[0] <= mData[2])
+  {
+    greater = true;
+  }
+  if (greater)
+  {
+    std::sort(tmp.begin(), tmp.end());
+  }
+  else
+  {
+    std::sort(tmp.rbegin(), tmp.rend());
+  }
 
   return tmp[k-1];
   //can include anything
