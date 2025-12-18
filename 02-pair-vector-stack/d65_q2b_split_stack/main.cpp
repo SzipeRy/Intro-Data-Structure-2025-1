@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "student.h"
+#include "student_50.h"
 
 int main()
 {
